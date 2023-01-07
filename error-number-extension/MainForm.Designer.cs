@@ -38,7 +38,7 @@
             // 
             // textBoxUsername
             // 
-            this.textBoxUsername.Location = new System.Drawing.Point(3, 3);
+            this.textBoxUsername.Location = new System.Drawing.Point(42, 12);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.PlaceholderText = "User Name";
             this.textBoxUsername.Size = new System.Drawing.Size(334, 31);
@@ -46,7 +46,7 @@
             // 
             // textBoxEmail
             // 
-            this.textBoxEmail.Location = new System.Drawing.Point(3, 40);
+            this.textBoxEmail.Location = new System.Drawing.Point(42, 49);
             this.textBoxEmail.Name = "textBoxEmail";
             this.textBoxEmail.PlaceholderText = "Email Address";
             this.textBoxEmail.Size = new System.Drawing.Size(334, 31);
@@ -54,7 +54,7 @@
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(3, 77);
+            this.textBoxPassword.Location = new System.Drawing.Point(42, 86);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
             this.textBoxPassword.PlaceholderText = "Password";
@@ -63,8 +63,9 @@
             // 
             // textBoxConfirm
             // 
-            this.textBoxConfirm.Location = new System.Drawing.Point(3, 114);
+            this.textBoxConfirm.Location = new System.Drawing.Point(42, 123);
             this.textBoxConfirm.Name = "textBoxConfirm";
+            this.textBoxConfirm.PasswordChar = '*';
             this.textBoxConfirm.PlaceholderText = "Confirm";
             this.textBoxConfirm.Size = new System.Drawing.Size(334, 31);
             this.textBoxConfirm.TabIndex = 4;
@@ -72,7 +73,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Enabled = false;
-            this.buttonLogin.Location = new System.Drawing.Point(3, 151);
+            this.buttonLogin.Location = new System.Drawing.Point(264, 160);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(112, 34);
             this.buttonLogin.TabIndex = 0;
@@ -83,7 +84,7 @@
             // 
             this.labelError.AutoSize = true;
             this.labelError.ForeColor = System.Drawing.Color.Maroon;
-            this.labelError.Location = new System.Drawing.Point(121, 148);
+            this.labelError.Location = new System.Drawing.Point(51, 198);
             this.labelError.Name = "labelError";
             this.labelError.Size = new System.Drawing.Size(50, 25);
             this.labelError.TabIndex = 5;
@@ -94,6 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(478, 244);
             this.Controls.Add(this.labelError);
             this.Controls.Add(this.buttonLogin);

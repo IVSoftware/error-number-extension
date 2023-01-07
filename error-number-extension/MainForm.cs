@@ -11,7 +11,6 @@ namespace error_number_extension
         public string Email => textBoxEmail.Text;
         public string Password => textBoxPassword.Text;
         public string Confirm => textBoxConfirm.Text;
-        public Control ErrorLabel => labelError;
         #endregion I M P L E M E N T    I N T E R F A C E
 
         public MainForm()
@@ -21,18 +20,19 @@ namespace error_number_extension
             {
                 if(control is TextBox textBox)
                 {
+                    textBox.TabStop = false;
                     textBox.KeyDown += onAnyTextboxKeyDown;
                     textBox.Validating += onAnyTextBoxValidating;
                 }
             }
         }
-
         private void onAnyTextboxKeyDown(object? sender, KeyEventArgs e)
         {
             if (sender is TextBox textbox)
             {
                 if (e.KeyData.Equals(Keys.Return))
                 {
+                    // Handle the Enter key.
                     e.SuppressKeyPress = e.Handled = true;
                     textbox.BeginInvoke(() => textbox.SelectAll());
 
@@ -45,51 +45,52 @@ namespace error_number_extension
 
         private void onAnyTextBoxValidating(object? sender, CancelEventArgs e)
         {
-            buttonLogin.Enabled = this.ValidateForm();
-            if (sender is TextBox textbox)
+            ErrorInt @int = (ErrorInt)this.ValidateForm(e);
+            switch (@int)
             {
-                this.SelectNextControl(
-                    (Control)sender,
-                    forward: true,
-                    tabStopOnly: true,
-                    nested: false,
-                    wrap: true);
+                case ErrorInt.None: labelError.Visible = false; return;
+                case ErrorInt.Username:textBoxUsername.Focus(); break;
+                case ErrorInt.Email: textBoxEmail.Focus(); break;
+                case ErrorInt.Password: textBoxPassword.Focus(); break;
+                case ErrorInt.Confirm: textBoxConfirm.Focus(); break;
             }
+            labelError.Visible = true;
+            labelError.Text = typeof(ErrorInt)
+                .GetMember(@int.ToString())
+                .First()?
+                .GetCustomAttribute<DescriptionAttribute>()
+                .Description;
         }
     }
     static class Extensions
     {
-        public static bool ValidateForm(this IValidate @this)
+        public static int ValidateForm(this IValidate @this, CancelEventArgs e)
         {
-            bool isError = true;
-            if (@this.Username.Length < 3)
-            {
-                @this.ErrorLabel.Text = "Username must be at least 3 characters.";
-            }
-            else if (!@this.Email.Contains("@"))
-            {
-                @this.ErrorLabel.Text = "Valid email is required.";
-            }
-            else if (@this.Password.Length < 7)
-            {
-                @this.ErrorLabel.Text = "Password must be at least 7 characters.";
-            }
-            else if (!@this.Password.Equals(@this.Confirm))
-            {
-                @this.ErrorLabel.Text = "Passwords must match.";
-            }
-            else isError = false;
-            @this.ErrorLabel.Visible = isError;
-            return isError;
+            if (@this.Username.Length < 3) return 1;
+            if (!@this.Email.Contains("@")) return 2;
+            if (@this.Password.Length < 7) return 3;
+            if (!@this.Password.Equals(@this.Confirm)) return 4;
+            return 0;
         }
     }
 
+    enum ErrorInt
+    {
+        None = 0,
+        [Description("Username must be at least 3 characters.")]
+        Username = 1,
+        [Description("Valid email is required.")]
+        Email = 2,
+        [Description("Password must be at least 7 characters.")]
+        Password = 3,
+        [Description("Passwords must match.")]
+        Confirm = 4,
+    }
     interface IValidate
     {
         public string Username { get; }
         public string Email { get; }
         public string Password { get; }
         public string Confirm { get; }
-        public Control ErrorLabel { get; }
     }
 }
