@@ -16,7 +16,7 @@ First ask "what info is needed to determine a valid form?" Define these requirem
     }
 
 ***
-Now we can write an Extension Method for "any" form that implements `IValidate` (this is the **global class** you asked about.)
+Now declare an Extension Method for "any" form that implements `IValidate` (this is the **global class** you asked about).
 
     static class Extensions
     {
