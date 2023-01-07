@@ -38,11 +38,13 @@ namespace error_number_extension
                 ErrorInt @int = (ErrorInt)this.ValidateForm(e);
                 if (@int.Equals(ErrorInt.None))
                 {
-                    labelError.Visible = false; 
+                    labelError.Visible = false;
+                    buttonLogin.Enabled = true;
                     return;
                 }
                 else if (textBox.Modified)
                 {
+                    buttonLogin.Enabled = false;
                     BeginInvoke(() =>
                     {
                         switch (@int)

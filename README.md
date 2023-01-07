@@ -76,11 +76,13 @@ Finally, call this extension method when any textbox loses focus or receives an 
                 ErrorInt @int = (ErrorInt)this.ValidateForm(e);
                 if (@int.Equals(ErrorInt.None))
                 {
-                    labelError.Visible = false; 
+                    labelError.Visible = false;
+                    buttonLogin.Enabled = true;
                     return;
                 }
                 else if (textBox.Modified)
                 {
+                    buttonLogin.Enabled = false;
                     BeginInvoke(() =>
                     {
                         switch (@int)
