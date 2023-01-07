@@ -23,6 +23,44 @@ namespace error_number_extension
                     textBox.TabStop = false;
                     textBox.KeyDown += onAnyTextboxKeyDown;
                     textBox.Validating += onAnyTextBoxValidating;
+                    textBox.TextChanged += (sender, e) =>
+                    {
+                        if (sender is TextBox textbox) textbox.Modified = true;
+                    };
+                }
+            }
+        }
+        private void onAnyTextBoxValidating(object? sender, CancelEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                // Call the extension method to validate.
+                ErrorInt @int = (ErrorInt)this.ValidateForm(e);
+                if (@int.Equals(ErrorInt.None))
+                {
+                    labelError.Visible = false; 
+                    return;
+                }
+                else if (textBox.Modified)
+                {
+                    BeginInvoke(() =>
+                    {
+                        switch (@int)
+                        {
+                            case ErrorInt.Username: textBoxUsername.Focus(); break;
+                            case ErrorInt.Email: textBoxEmail.Focus(); break;
+                            case ErrorInt.Password: textBoxPassword.Focus(); break;
+                            case ErrorInt.Confirm: textBoxConfirm.Focus(); break;
+                        }
+                        labelError.Visible = true;
+                        labelError.Text = typeof(ErrorInt)
+                            .GetMember(@int.ToString())
+                            .First()?
+                            .GetCustomAttribute<DescriptionAttribute>()
+                            .Description;
+                        textBox.Modified = false;
+                        textBox.SelectAll();
+                    });
                 }
             }
         }
@@ -34,32 +72,12 @@ namespace error_number_extension
                 {
                     // Handle the Enter key.
                     e.SuppressKeyPress = e.Handled = true;
-                    textbox.BeginInvoke(() => textbox.SelectAll());
 
                     MethodInfo? validate = typeof(TextBox).GetMethod("OnValidating", BindingFlags.Instance | BindingFlags.NonPublic);
                     CancelEventArgs eCancel = new CancelEventArgs();
                     validate?.Invoke(textbox, new[] { eCancel });
                 }
             }
-        }
-
-        private void onAnyTextBoxValidating(object? sender, CancelEventArgs e)
-        {
-            ErrorInt @int = (ErrorInt)this.ValidateForm(e);
-            switch (@int)
-            {
-                case ErrorInt.None: labelError.Visible = false; return;
-                case ErrorInt.Username:textBoxUsername.Focus(); break;
-                case ErrorInt.Email: textBoxEmail.Focus(); break;
-                case ErrorInt.Password: textBoxPassword.Focus(); break;
-                case ErrorInt.Confirm: textBoxConfirm.Focus(); break;
-            }
-            labelError.Visible = true;
-            labelError.Text = typeof(ErrorInt)
-                .GetMember(@int.ToString())
-                .First()?
-                .GetCustomAttribute<DescriptionAttribute>()
-                .Description;
         }
     }
     static class Extensions
