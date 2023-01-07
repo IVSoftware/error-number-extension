@@ -1,10 +1,10 @@
 Making a static [Extension Method](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 is one way to **"create global class (so I have to write it only once...)"**. This answer will explore this option step-by-step.
 
-[![screenshot][1]][1]
+[![screenshots][1]][1]
 
 ***
-First ask "what info is necessary to determine a valid form?" and define the requirements in an [interface](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interface):
+First ask "what info is needed to determine a valid form?" Define these requirements in an [interface](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interface):
 
     interface IValidate
     {
@@ -47,10 +47,11 @@ Next, for each of the your 3 forms, implement the interface. This just means tha
     }
 
 ***
-Finally, we want to call this extension method when any textbox loses focus or received an Enter key.
+Finally, call this extension method when any textbox loses focus or receives an Enter key.
 
     public partial class MainForm : Form, IValidate
-    {        public MainForm()
+    {        
+        public MainForm()
         {
             InitializeComponent();
             foreach (Control control in Controls)
@@ -118,4 +119,4 @@ Where:
     }
 
 
-  [1]: https://i.stack.imgur.com/pjYTp.png
+  [1]: https://i.stack.imgur.com/6YRLR.png
