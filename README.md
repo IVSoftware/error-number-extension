@@ -33,7 +33,7 @@ Now declare an Extension Method for "any" form that implements `IValidate` (this
 ***
 **Example of Form Validation**
 
-For each of the your 3 forms, implement the interface. This just means that the 3 form classes are making a promise or contract to provide the  information that the interface requires (in this case by retrieving the text from the textboxes). 
+For each of your 3 forms, implement the interface. This just means that the 3 form classes are making a promise or contract to provide the  information that the interface requires (in this case by retrieving the text from the textboxes). 
 
     public partial class MainForm : Form, IValidate
     {
